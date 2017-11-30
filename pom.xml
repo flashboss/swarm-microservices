@@ -6,7 +6,6 @@
 	<artifactId>swarm-microservices</artifactId>
 	<name>WildFly Swarm Example</name>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>war</packaging>
 
 	<properties>
 		<version.wildfly.swarm>2017.11.0</version.wildfly.swarm>
