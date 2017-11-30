@@ -1,4 +1,4 @@
-package com.sourcesense.axa.microservices.rest;
+package it.vige.microservices.rest;
 
 
 import javax.ws.rs.Path;
