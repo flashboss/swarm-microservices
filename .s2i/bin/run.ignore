@@ -32,7 +32,7 @@ if [ -f "$local_source_dir/pom.xml" ]; then
   
   pushd $local_source_dir &> /dev/null
   JAVA_HOME=/etc/alternatives/java_sdk_1.7.0  
-  mvn wildfly-swarm:run -Popenshift -DskipTests
+  mvn wildfly-swarm:run -DskipTests
   err=$?
   if [ $err -ne 0 ]; then
     echo "Aborting due to error code $err from mvn package"
