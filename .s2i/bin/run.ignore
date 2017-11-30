@@ -18,9 +18,11 @@ function restore_saved_artifacts() {
 # Source code provided to STI will be bind-mounted at /tmp/src
 # and then copied into /opt/wildfly/source for building.
 local_source_dir=/opt/source
+echo "...creating source dir"
 mkdir -p $local_source_dir
 
 # Copy the source from the bind mount in preparation for compilation
+echo "...moving from tmp to source dir"
 cp -ad /tmp/src/* $local_source_dir
 
 # If a pom.xml is present, this is a normal build scenario 
@@ -28,10 +30,12 @@ cp -ad /tmp/src/* $local_source_dir
 if [ -f "$local_source_dir/pom.xml" ]; then
   # restore any maven dependencies which will be present if this is an
   # incremental build
+  echo "...restoring artifacts"
   restore_saved_artifacts
-  
+ 
+  echo "...pushing" 
   pushd $local_source_dir &> /dev/null
-  JAVA_HOME=/etc/alternatives/java_sdk_1.7.0  
+  echo "...compiling and strating wildfly swarm"
   mvn wildfly-swarm:run -DskipTests
   err=$?
   if [ $err -ne 0 ]; then
