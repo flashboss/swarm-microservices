@@ -1,3 +1,47 @@
-#!/bin/bash
-echo hello world
-exec /wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+#!/bin/bash 
+
+# restore maven dependencies downloaded in a previous build,
+# so they do not have to be downloaded again.  
+# /tmp/artifacts will only be present in the incremental build scenario
+# in which the target image name is an existing docker image which contains
+# dependencies from a prior build execution.
+function restore_saved_artifacts() {
+  if [ -f /tmp/artifacts/maven.tar.gz ]; then
+    pushd / &> /dev/null
+    echo -n "Restoring saved artifacts from prior build..."
+    tar zxf /tmp/artifacts/maven.tar.gz
+    echo "...done"
+    popd &> /dev/null
+  fi
+}
+
+# Source code provided to STI will be bind-mounted at /tmp/src
+# and then copied into /opt/wildfly/source for building.
+local_source_dir=/opt/source
+mkdir -p $local_source_dir
+
+# Copy the source from the bind mount in preparation for compilation
+cp -ad /tmp/src/* $local_source_dir
+
+# If a pom.xml is present, this is a normal build scenario 
+# so run maven.
+if [ -f "$local_source_dir/pom.xml" ]; then
+  # restore any maven dependencies which will be present if this is an
+  # incremental build
+  restore_saved_artifacts
+  
+  pushd $local_source_dir &> /dev/null
+  JAVA_HOME=/etc/alternatives/java_sdk_1.7.0  
+  mvn wildfly-swarm:run -Popenshift -DskipTests
+  err=$?
+  if [ $err -ne 0 ]; then
+    echo "Aborting due to error code $err from mvn package"
+    exit $err
+  fi
+
+  echo "...done"
+
+  popd &> /dev/null
+else
+  echo "...nothing is done"
+fi
