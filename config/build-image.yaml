@@ -9,7 +9,6 @@ metadata:
     app: swarm-microservices
   name: swarm-microservices
   namespace: wildflyswarm
-  resourceVersion: '467136911'
   selfLink: /oapi/v1/namespaces/wildflyswarm/imagestreams/swarm-microservices
   uid: b786d2d2-d5eb-11e7-94f1-06579ed29230
 spec:
