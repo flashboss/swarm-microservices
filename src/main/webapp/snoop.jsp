@@ -8,7 +8,7 @@
 <HTML>
 <HEAD>
 	<TITLE>JBossAS7 JSP snoop page</TITLE>
-	<%@ page import="javax.servlet.http.HttpUtils,java.util.Enumeration" %>
+	<%@ page import="java.util.Enumeration" %>
 	<%@ page import="java.lang.management.*" %>
 	<%@ page import="java.util.*" %>
 </HEAD>
@@ -20,7 +20,7 @@
 <h2>JVM Memory Monitor</h2>
  
  
-<table border="0" width="100%">
+<table>
  
 <tbody>
 <tr>
@@ -56,12 +56,12 @@
 </tbody>
 </table>
 <%
-Iterator iter = ManagementFactory.getMemoryPoolMXBeans().iterator();
+Iterator<MemoryPoolMXBean> iter = ManagementFactory.getMemoryPoolMXBeans().iterator();
 while (iter.hasNext()) {
 MemoryPoolMXBean item = (MemoryPoolMXBean) iter.next();
 %>
  
-<table style="border: 1px #98AAB1 solid;" border="0" width="100%">
+<table style="border: 1px #98AAB1 solid;">
  
 <tbody>
 <tr>
@@ -99,10 +99,6 @@ MemoryPoolMXBean item = (MemoryPoolMXBean) iter.next();
 <H2>Request information</H2>
 
 <TABLE>
-<TR>
-	<TH align=right>Requested URL:</TH>
-	<TD><%= HttpUtils.getRequestURL(request) %></TD>
-</TR>
 <TR>
 	<TH align=right>Request method:</TH>
 	<TD><%= request.getMethod() %></TD>
@@ -166,7 +162,7 @@ MemoryPoolMXBean item = (MemoryPoolMXBean) iter.next();
 </TABLE>
 
 <%
-	Enumeration e = request.getHeaderNames();
+	Enumeration<String> e = request.getHeaderNames();
 	if(e != null && e.hasMoreElements()) {
 %>
 <H2>Request headers</H2>
