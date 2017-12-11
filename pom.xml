@@ -6,6 +6,7 @@
 	<artifactId>swarm-microservices</artifactId>
 	<name>WildFly Swarm Example</name>
 	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
 
 	<properties>
 		<version.wildfly.swarm>2017.11.0</version.wildfly.swarm>
@@ -55,6 +56,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- WildFly Swarm Fractions -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.187</version>
+		</dependency>
 	</dependencies>
 
 	<profiles>
